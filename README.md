@@ -12,6 +12,15 @@ Rust FFI wrapper for SunnyNet DLL, with dynamic symbol loading and a typed API e
 
 1. Add dependency in `Cargo.toml`:
 
+Via crates.io:
+
+```toml
+[dependencies]
+sunnynet-sdk = "0.1"
+```
+
+Or via GitHub:
+
 ```toml
 [dependencies]
 sunnynet-sdk = { git = "https://github.com/itisl2220/sunnynet-rs.git" }
@@ -67,4 +76,5 @@ if !missing.is_empty() {
 
 - Current DLL package is Windows-only.
 - Prefer `SunnyNet64.dll` on x64 environment.
+- Crates.io package excludes DLL files; download from this repo's `bin/` directory.
 - If you copy DLL to other locations, pass the actual path to `LoadedSunnyNet::load`.
