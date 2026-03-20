@@ -1,12 +1,12 @@
 [package]
-name = "sunnynet-sdk"
+name = "sunnynet-rs"
 version = "0.1.0"
 edition = "2021"
 description = "Rust FFI wrapper for SunnyNet DLL with dynamic symbol loading."
 license = "MIT"
 repository = "https://github.com/itisl2220/sunnynet-rs"
 homepage = "https://github.com/itisl2220/sunnynet-rs"
-documentation = "https://docs.rs/sunnynet-sdk"
+documentation = "https://docs.rs/sunnynet-rs"
 readme = "README.md"
 keywords = ["ffi", "dll", "proxy", "windows", "sunnynet"]
 categories = ["api-bindings", "network-programming"]

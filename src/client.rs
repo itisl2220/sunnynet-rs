@@ -719,9 +719,9 @@ fn release_embedded_dll_to_runtime() -> SunnyNetResult<PathBuf> {
     }
 
     let file_name = if cfg!(target_pointer_width = "64") {
-        "SunnyNet64-sdk.dll"
+        "SunnyNet64-rs.dll"
     } else {
-        "SunnyNet-sdk.dll"
+        "SunnyNet-rs.dll"
     };
     let runtime_dir = std::env::current_exe()
         .map_err(|err| SunnyNetError::operation_failed("current_exe", err.to_string()))?

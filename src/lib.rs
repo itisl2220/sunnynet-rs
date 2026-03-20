@@ -1,4 +1,4 @@
-//! `sunnynet-sdk` 提供对 SunnyNet DLL 的 Rust 封装。
+//! `sunnynet-rs` 提供对 SunnyNet DLL 的 Rust 封装。
 //!
 //! 设计上分为两层：
 //! - `LoadedSunnyNet`：底层动态加载 + 原生符号调用，适合精细控制。

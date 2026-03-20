@@ -1,6 +1,6 @@
-# sunnynet-sdk
+# sunnynet-rs
 
-`sunnynet-sdk` 是 SunnyNet DLL 的 Rust FFI 封装，提供两层能力：
+`sunnynet-rs` 是 SunnyNet DLL 的 Rust FFI 封装，提供两层能力：
 
 - `LoadedSunnyNet`：低层符号加载 + 原生函数访问，适合需要完整控制的场景。
 - `SunnyNetClient`：高层客户端封装，内置回调注册、状态管理、证书与系统代理操作。
@@ -24,21 +24,21 @@
 
 ```toml
 [dependencies]
-sunnynet-sdk = "0.1"
+sunnynet-rs = "0.1"
 ```
 
 ### 方式二：GitHub
 
 ```toml
 [dependencies]
-sunnynet-sdk = { git = "https://github.com/itisl2220/sunnynet-rs.git" }
+sunnynet-rs = { git = "https://github.com/itisl2220/sunnynet-rs.git" }
 ```
 
 ## 快速开始（低层 API）
 
 ```rust
 use std::path::Path;
-use sunnynet_sdk::LoadedSunnyNet;
+use sunnynet_rs::LoadedSunnyNet;
 
 fn main() -> Result<(), String> {
     let sdk = LoadedSunnyNet::load(Path::new("./bin/SunnyNet64.dll"))?;
@@ -72,7 +72,7 @@ fn main() -> Result<(), String> {
 ## 快速开始（高层 Client）
 
 ```rust
-use sunnynet_sdk::{HttpHandler, HttpEvent, NoopHandler, SunnyNetClient};
+use sunnynet_rs::{HttpHandler, HttpEvent, NoopHandler, SunnyNetClient};
 
 #[derive(Default)]
 struct MyHandler;
@@ -84,12 +84,12 @@ impl HttpHandler for MyHandler {
 }
 
 // 其余事件不关心时，可直接继承 NoopHandler 的空实现
-impl sunnynet_sdk::TcpHandler for MyHandler {}
-impl sunnynet_sdk::WebSocketHandler for MyHandler {}
-impl sunnynet_sdk::UdpHandler for MyHandler {}
-impl sunnynet_sdk::ScriptHandler for MyHandler {}
+impl sunnynet_rs::TcpHandler for MyHandler {}
+impl sunnynet_rs::WebSocketHandler for MyHandler {}
+impl sunnynet_rs::UdpHandler for MyHandler {}
+impl sunnynet_rs::ScriptHandler for MyHandler {}
 
-fn build_client() -> Result<SunnyNetClient<MyHandler>, sunnynet_sdk::SunnyNetError> {
+fn build_client() -> Result<SunnyNetClient<MyHandler>, sunnynet_rs::SunnyNetError> {
     SunnyNetClient::builder(MyHandler::default())
         .port(20250)
         .build()
