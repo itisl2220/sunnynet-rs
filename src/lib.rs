@@ -76,16 +76,6 @@ type SunnyNetSetCertFn = unsafe extern "C" fn(GoInt, GoInt) -> GoUint8;
 type SunnyNetInstallCertFn = unsafe extern "C" fn(GoInt) -> GoUintptr;
 type SetIeProxyFn = unsafe extern "C" fn(GoInt) -> GoUint8;
 type CancelIeProxyFn = unsafe extern "C" fn(GoInt) -> GoUint8;
-type GetRequestAllHeaderFn = unsafe extern "C" fn(GoInt) -> GoUintptr;
-type GetResponseAllHeaderFn = unsafe extern "C" fn(GoInt) -> GoUintptr;
-type GetRequestBodyLenFn = unsafe extern "C" fn(GoInt) -> GoInt;
-type GetRequestBodyFn = unsafe extern "C" fn(GoInt) -> GoUintptr;
-type GetResponseBodyLenFn = unsafe extern "C" fn(GoInt) -> GoInt;
-type GetResponseBodyFn = unsafe extern "C" fn(GoInt) -> GoUintptr;
-type GetResponseStatusCodeFn = unsafe extern "C" fn(GoInt) -> GoInt;
-type GetRequestProtoFn = unsafe extern "C" fn(GoInt) -> GoUintptr;
-type GetResponseProtoFn = unsafe extern "C" fn(GoInt) -> GoUintptr;
-type GetResponseServerAddressFn = unsafe extern "C" fn(GoInt) -> GoUintptr;
 type FreeFn = unsafe extern "C" fn(GoUintptr);
 type GetSunnyVersionFn = unsafe extern "C" fn() -> GoUintptr;
 
@@ -111,16 +101,6 @@ pub struct SunnyNetApi {
     sunny_net_install_cert: Option<SunnyNetInstallCertFn>,
     set_ie_proxy: SetIeProxyFn,
     cancel_ie_proxy: CancelIeProxyFn,
-    get_request_all_header: GetRequestAllHeaderFn,
-    get_response_all_header: GetResponseAllHeaderFn,
-    get_request_body_len: GetRequestBodyLenFn,
-    get_request_body: GetRequestBodyFn,
-    get_response_body_len: GetResponseBodyLenFn,
-    get_response_body: GetResponseBodyFn,
-    get_response_status_code: GetResponseStatusCodeFn,
-    get_request_proto: GetRequestProtoFn,
-    get_response_proto: GetResponseProtoFn,
-    get_response_server_address: GetResponseServerAddressFn,
     free: FreeFn,
     get_sunny_version: GetSunnyVersionFn,
 }
@@ -165,36 +145,6 @@ macro_rules! build_sunnynet_api {
             ),
             set_ie_proxy: req_symbol!($library, SetIeProxyFn, "SetIeProxy"),
             cancel_ie_proxy: req_symbol!($library, CancelIeProxyFn, "CancelIEProxy"),
-            get_request_all_header: req_symbol!(
-                $library,
-                GetRequestAllHeaderFn,
-                "GetRequestAllHeader"
-            ),
-            get_response_all_header: req_symbol!(
-                $library,
-                GetResponseAllHeaderFn,
-                "GetResponseAllHeader"
-            ),
-            get_request_body_len: req_symbol!($library, GetRequestBodyLenFn, "GetRequestBodyLen"),
-            get_request_body: req_symbol!($library, GetRequestBodyFn, "GetRequestBody"),
-            get_response_body_len: req_symbol!(
-                $library,
-                GetResponseBodyLenFn,
-                "GetResponseBodyLen"
-            ),
-            get_response_body: req_symbol!($library, GetResponseBodyFn, "GetResponseBody"),
-            get_response_status_code: req_symbol!(
-                $library,
-                GetResponseStatusCodeFn,
-                "GetResponseStatusCode"
-            ),
-            get_request_proto: req_symbol!($library, GetRequestProtoFn, "GetRequestProto"),
-            get_response_proto: req_symbol!($library, GetResponseProtoFn, "GetResponseProto"),
-            get_response_server_address: req_symbol!(
-                $library,
-                GetResponseServerAddressFn,
-                "GetResponseServerAddress"
-            ),
             free: req_symbol!($library, FreeFn, "Free"),
             get_sunny_version: req_symbol!($library, GetSunnyVersionFn, "GetSunnyVersion"),
         }
@@ -383,57 +333,12 @@ impl SunnyNetApi {
             .map(|func| unsafe { func(sunny_context) })
     }
 
-    pub fn sunny_net_install_cert_message(&self, sunny_context: GoInt) -> Option<String> {
-        self.sunny_net_install_cert_ptr(sunny_context)
-            .and_then(|ptr| self.read_owned_string(ptr))
-    }
-
     pub fn set_ie_proxy(&self, sunny_context: GoInt) -> bool {
         unsafe { (self.set_ie_proxy)(sunny_context) != 0 }
     }
 
     pub fn cancel_ie_proxy(&self, sunny_context: GoInt) -> bool {
         unsafe { (self.cancel_ie_proxy)(sunny_context) != 0 }
-    }
-
-    pub fn get_request_all_header_ptr(&self, message_id: GoInt) -> GoUintptr {
-        unsafe { (self.get_request_all_header)(message_id) }
-    }
-
-    pub fn get_response_all_header_ptr(&self, message_id: GoInt) -> GoUintptr {
-        unsafe { (self.get_response_all_header)(message_id) }
-    }
-
-    pub fn get_request_body_len(&self, message_id: GoInt) -> GoInt {
-        unsafe { (self.get_request_body_len)(message_id) }
-    }
-
-    pub fn get_request_body_ptr(&self, message_id: GoInt) -> GoUintptr {
-        unsafe { (self.get_request_body)(message_id) }
-    }
-
-    pub fn get_response_body_len(&self, message_id: GoInt) -> GoInt {
-        unsafe { (self.get_response_body_len)(message_id) }
-    }
-
-    pub fn get_response_body_ptr(&self, message_id: GoInt) -> GoUintptr {
-        unsafe { (self.get_response_body)(message_id) }
-    }
-
-    pub fn get_response_status_code(&self, message_id: GoInt) -> GoInt {
-        unsafe { (self.get_response_status_code)(message_id) }
-    }
-
-    pub fn get_request_proto_ptr(&self, message_id: GoInt) -> GoUintptr {
-        unsafe { (self.get_request_proto)(message_id) }
-    }
-
-    pub fn get_response_proto_ptr(&self, message_id: GoInt) -> GoUintptr {
-        unsafe { (self.get_response_proto)(message_id) }
-    }
-
-    pub fn get_response_server_address_ptr(&self, message_id: GoInt) -> GoUintptr {
-        unsafe { (self.get_response_server_address)(message_id) }
     }
 
     pub fn get_sunny_version_ptr(&self) -> GoUintptr {
